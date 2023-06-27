@@ -1,0 +1,344 @@
+"use strict";
+(self["webpackChunkreact_control_lib"] = self["webpackChunkreact_control_lib"] || []).push([[237],{
+
+/***/ 1237:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "default": () => (/* binding */ RaceBarChart_RacingBarChart)
+});
+
+// EXTERNAL MODULE: external "react"
+var external_react_ = __webpack_require__(644);
+// EXTERNAL MODULE: ./node_modules/d3/src/index.js + 145 modules
+var src = __webpack_require__(7047);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js
+var injectStylesIntoStyleTag = __webpack_require__(3379);
+var injectStylesIntoStyleTag_default = /*#__PURE__*/__webpack_require__.n(injectStylesIntoStyleTag);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleDomAPI.js
+var styleDomAPI = __webpack_require__(7795);
+var styleDomAPI_default = /*#__PURE__*/__webpack_require__.n(styleDomAPI);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertBySelector.js
+var insertBySelector = __webpack_require__(569);
+var insertBySelector_default = /*#__PURE__*/__webpack_require__.n(insertBySelector);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js
+var setAttributesWithoutAttributes = __webpack_require__(3565);
+var setAttributesWithoutAttributes_default = /*#__PURE__*/__webpack_require__.n(setAttributesWithoutAttributes);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertStyleElement.js
+var insertStyleElement = __webpack_require__(9216);
+var insertStyleElement_default = /*#__PURE__*/__webpack_require__.n(insertStyleElement);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleTagTransform.js
+var styleTagTransform = __webpack_require__(4589);
+var styleTagTransform_default = /*#__PURE__*/__webpack_require__.n(styleTagTransform);
+// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/Components/RaceBarChart/RaceBarChart.css
+var RaceBarChart = __webpack_require__(3270);
+;// CONCATENATED MODULE: ./src/Components/RaceBarChart/RaceBarChart.css
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (styleTagTransform_default());
+options.setAttributes = (setAttributesWithoutAttributes_default());
+
+      options.insert = insertBySelector_default().bind(null, "head");
+    
+options.domAPI = (styleDomAPI_default());
+options.insertStyleElement = (insertStyleElement_default());
+
+var update = injectStylesIntoStyleTag_default()(RaceBarChart/* default */.Z, options);
+
+
+
+
+       /* harmony default export */ const RaceBarChart_RaceBarChart = (RaceBarChart/* default */.Z && RaceBarChart/* default.locals */.Z.locals ? RaceBarChart/* default.locals */.Z.locals : undefined);
+
+;// CONCATENATED MODULE: ./src/Components/RaceBarChart/RacingBarChart.jsx
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+ // export interface IRacingBarChartProps {
+//   data: any;
+//   config: any;
+//   dimensions?: {
+//     width: number;
+//     height: number;
+//   };
+//   detectOutliers?: boolean;
+//   maxRange?: number;
+//   children: any;
+// }
+
+var RacingBarChart = function RacingBarChart(props) {
+  (0,external_react_.useEffect)(function () {
+    plotChart(props.data ? props.data : []);
+  }, []);
+
+  var halo = function halo(text, strokeWidth) {
+    text.select(function () {
+      return this.parentNode.insertBefore(this.cloneNode(true), this);
+    }).style("fill", "#ffffff").style("stroke", "#ffffff").style("stroke-width", strokeWidth).style("stroke-linejoin", "round").style("opacity", 1);
+  };
+
+  var getSlices = function getSlices(data) {
+    var slices = new Set();
+    data.map(function (d) {
+      //  slices.add(new Date(d[props.config.x]?.toString()).getTime());
+      slices.add(d[props.config.x]);
+    });
+    return slices;
+  };
+
+  var createSlice = function createSlice(slice) {
+    var resMap = new Map();
+    var result = [];
+    slice.map(function (x) {
+      if (!resMap.has(x[props.config.name])) resMap.set(x[props.config.name], {
+        value: x[props.config.value],
+        colour: x.colour ? x.colour : src/* hsl */.Ym7(Math.random() * 360, 0.75, 0.75)
+      });else resMap.set(x[props.config.name], {
+        value: x[props.config.value] + resMap.get(x[props.config.name]).value,
+        colour: x.colour ? x.colour : src/* hsl */.Ym7(Math.random() * 360, 0.75, 0.75)
+      });
+    });
+    resMap.forEach(function (value, key) {
+      result.push({
+        name: key,
+        value: value.value,
+        colour: value.colour
+      });
+    });
+    result = result.sort(function (a, b) {
+      return b.value - a.value;
+    });
+    result.forEach(function (d, i) {
+      d.rank = i;
+    });
+    return result.slice(0, 12);
+  };
+
+  var plotChart = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(data) {
+      var maxRange, tickDuration, top_n, height, width, svg, margin, barPadding, caption, slices, year, yearSlice, x, y, xAxis, yearText, counter, ticker;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              console.log(props);
+              maxRange = props.detectOutliers ? props.maxRange ? props.maxRange : 6000 : undefined;
+              tickDuration = 1000;
+              top_n = 12;
+              height = props.dimensions ? props.dimensions.height : 400;
+              width = props.dimensions ? props.dimensions.width : window.innerWidth;
+              svg = src/* select */.Ys("#chart").append("svg").attr("viewBox", "0 0 ".concat(width, " ").concat(height));
+              margin = {
+                top: 80,
+                right: 0,
+                bottom: 5,
+                left: 0
+              };
+              barPadding = (height - (margin.bottom + margin.top)) / (top_n * 5);
+              caption = svg.append("text").attr("class", "caption").attr("x", width).attr("y", height - 5).style("text-anchor", "end");
+              data = src/* group */.ruo(data, function (d) {
+                return d[props.config.x];
+              }); // let slices = getSlices(data);
+              // slices = Array.from(slices).sort((a, b) => {
+              //   return a - b;
+              // });
+
+              slices = Array.from(data.keys()).sort(function (a, b) {
+                return new Date(a).getTime() - new Date(b).getTime();
+              });
+              year = slices[0];
+              yearSlice = createSlice(data.get(year));
+              console.log("yearSlice: ", yearSlice);
+              x = src/* scaleLinear */.BYU().domain([0, maxRange ? maxRange : src/* max */.Fp7(yearSlice, function (d) {
+                return d.value;
+              })]).range([margin.left, width - margin.right - 65]);
+              y = src/* scaleLinear */.BYU().domain([top_n, 0]).range([height - margin.bottom, margin.top]);
+              xAxis = src/* axisTop */.F5q(x).scale(x).ticks(width > 500 ? 5 : 2).tickSize(-(height - margin.top - margin.bottom)).tickFormat(function (d) {
+                return src/* format */.WUZ(",")(d);
+              });
+              svg.append("g").attr("class", "axis xAxis").attr("transform", "translate(0, ".concat(margin.top, ")")).call(xAxis).selectAll(".tick line").selectAll(".tick:not(:first-of-type) line").attr("stroke", "white").classed("origin", function (d) {
+                return d == 0;
+              });
+              svg.selectAll("react.bar").data(yearSlice, function (d) {
+                return d.name;
+              }).enter().append("rect").attr("class", "bar").attr("x", x(0) + 1).attr("width", function (d) {
+                return src/* min */.VV$([x(d.value), 600]);
+              }).attr("y", function (d) {
+                return y(d.rank) + 5;
+              }).attr("height", y(1) - y(0) - barPadding).style("fill", function (d) {
+                return d.colour;
+              });
+              svg.selectAll("text.label").data(yearSlice, function (d) {
+                return d.name;
+              }).enter().append("text").attr("class", "label").attr("x", function (d) {
+                return maxRange ? d.value > maxRange ? width - 20 : x(d.value) : x(d.value);
+              }).attr("y", function (d) {
+                return y(d.rank) + 5 + (y(1) - y(0)) / 2 + 1;
+              }).style("text-anchor", "end").html(function (d) {
+                return d.name;
+              });
+              svg.selectAll("text.valueLabel").data(yearSlice, function (d) {
+                return d.name;
+              }).enter().append("text").attr("class", "valueLabel").attr("x", function (d) {
+                return x(d.value) + 5;
+              }).attr("y", function (d) {
+                return y(d.rank) + 5 + (y(1) - y(0)) / 2 + 1;
+              }).text(function (d) {
+                return src/* format */.WUZ(",.0f")(d.lastValue);
+              });
+              yearText = svg.append("text").attr("class", "yearText").attr("x", width - margin.right).attr("y", height - 25).style("text-anchor", "end").html(new Date(year).toLocaleDateString(undefined, {
+                year: "numeric",
+                month: "2-digit"
+              })).call(halo, 10);
+              counter = 0;
+              ticker = src/* interval */.FG_(function (e) {
+                counter++;
+                yearSlice = createSlice(data.get(year));
+                x.domain([0, maxRange ? maxRange : src/* max */.Fp7(yearSlice, function (d) {
+                  return d.value;
+                })]);
+                svg.select(".xAxis").transition().duration(tickDuration).ease(src/* easeLinear */.Nyw).call(xAxis);
+                var bars = svg.selectAll(".bar").data(yearSlice, function (d) {
+                  return d.name;
+                });
+                bars.enter().append("rect").attr("class", function (d) {
+                  return "bar ".concat(d.name.replace(/\s/g, "_"));
+                }).attr("x", x(0) + 1).attr("width", function (d) {
+                  return src/* min */.VV$([x(d.value), 300]);
+                }).attr("y", function (d) {
+                  return y(top_n + 1) + 5;
+                }).attr("height", y(1) - y(0) - barPadding).style("fill", function (d) {
+                  return d.colour;
+                }).transition().duration(tickDuration).ease(src/* easeLinear */.Nyw).attr("y", function (d) {
+                  return y(d.rank) + 5;
+                });
+                bars.transition().duration(tickDuration).ease(src/* easeLinear */.Nyw).attr("width", function (d) {
+                  return x(d.value) - x(0) - 1;
+                }).attr("y", function (d) {
+                  return y(d.rank) + 5;
+                });
+                bars.exit().transition().duration(tickDuration).ease(src/* easeLinear */.Nyw).attr("width", function (d) {
+                  return x(d.value) - x(0) - 1;
+                }).attr("y", function (d) {
+                  return y(top_n + 1) + 5;
+                }).remove();
+                var labels = svg.selectAll(".label").data(yearSlice, function (d) {
+                  return d.name;
+                });
+                labels.enter().append("text").attr("class", "label").attr("x", function (d) {
+                  return maxRange ? d.value > maxRange ? width - 20 : x(d.value) : x(d.value);
+                }).attr("y", function (d) {
+                  return y(top_n + 1) + 5 + (y(1) - y(0)) / 2;
+                }).style("text-anchor", "end").html(function (d) {
+                  return d.name;
+                }).transition().duration(tickDuration).ease(src/* easeLinear */.Nyw).attr("y", function (d) {
+                  return y(d.rank) + 5 + (y(1) - y(0)) / 2 + 1;
+                });
+                labels.transition().duration(tickDuration).ease(src/* easeLinear */.Nyw).attr("x", function (d) {
+                  return maxRange ? d.value > maxRange ? width - 20 : x(d.value) : x(d.value);
+                }).attr("y", function (d) {
+                  return y(d.rank) + 5 + (y(1) - y(0)) / 2 + 1;
+                });
+                labels.exit().transition().duration(tickDuration).ease(src/* easeLinear */.Nyw).attr("x", function (d) {
+                  return x(d.value) - 8;
+                }).attr("y", function (d) {
+                  return y(top_n + 1) + 5;
+                }).remove();
+                var valueLabels = svg.selectAll(".valueLabel").data(yearSlice, function (d) {
+                  return d.name;
+                });
+                valueLabels.enter().append("text").attr("class", "valueLabel").attr("x", function (d) {
+                  return x(d.value) + 5;
+                }).attr("y", function (d) {
+                  return y(top_n + 1) + 5;
+                }).text(function (d) {
+                  return src/* format */.WUZ(",.0f")(d.value);
+                }).transition().duration(tickDuration).ease(src/* easeLinear */.Nyw).attr("y", function (d) {
+                  return y(d.rank) + 5 + (y(1) - y(0)) / 2 + 1;
+                });
+                valueLabels.transition().duration(tickDuration).ease(src/* easeLinear */.Nyw).attr("x", function (d) {
+                  return x(d.value) + 5;
+                }).attr("y", function (d) {
+                  return y(d.rank) + 5 + (y(1) - y(0)) / 2 + 1;
+                }).tween("text", function (d) {
+                  var i = src/* interpolateRound */.uLU(d.value, d.value);
+                  return function (t) {
+                    this.textContent = src/* format */.WUZ(",")(i(t));
+                  };
+                });
+                valueLabels.exit().transition().duration(tickDuration).ease(src/* easeLinear */.Nyw).attr("x", function (d) {
+                  return x(d.value) + 5;
+                }).attr("y", function (d) {
+                  return y(top_n + 1) + 5;
+                }).remove();
+                yearText.html(new Date(year.toString()).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "2-digit"
+                }));
+                if (year == slices[slices.length - 1]) ticker.stop();
+                year = slices[counter];
+              }, tickDuration);
+
+            case 25:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function plotChart(_x) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  return /*#__PURE__*/React.createElement("div", {
+    id: "chart"
+  });
+};
+
+/* harmony default export */ const RaceBarChart_RacingBarChart = (RacingBarChart);
+
+/***/ }),
+
+/***/ 3270:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8081);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3645);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "text {\r\n  font-size: 1rem;\r\n  font-family: Open Sans, sans-serif;\r\n  color: #000;\r\n}\r\ntext.title {\r\n  font-size: 24px;\r\n  font-weight: 500;\r\n}\r\ntext.subTitle {\r\n  font-weight: 500;\r\n  fill: #777777;\r\n}\r\ntext.caption {\r\n  font-weight: 400;\r\n  font-size: 14px;\r\n  fill: #777777;\r\n}\r\ntext.label {\r\n  padding: 0.5em;\r\n  font-weight: 600;\r\n}\r\n\r\ntext.valueLabel {\r\n  font-weight: 300;\r\n}\r\n\r\ntext.yearText {\r\n  font-size: 64px;\r\n  font-weight: 700;\r\n  opacity: 0.25;\r\n}\r\n.tick text {\r\n  fill: #777777;\r\n}\r\n.xAxis .tick:nth-child(2) text {\r\n  text-anchor: start;\r\n}\r\n.tick line {\r\n  shape-rendering: CrispEdges;\r\n  stroke: #dddddd;\r\n}\r\n.tick line.origin {\r\n  stroke: #aaaaaa;\r\n}\r\npath.domain {\r\n  display: none;\r\n}\r\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ })
+
+}]);
